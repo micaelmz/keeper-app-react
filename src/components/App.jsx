@@ -6,7 +6,7 @@ import NotesArea from "./NotesArea";
 
 function App() {
 
-  const [noteList, setNodeList] = useState([]);
+  const [notesList, setNodeList] = useState([]);
   const [idCounter, setIdCounter] = useState(0);
 
   const addNote = (note) => {
@@ -30,8 +30,8 @@ function App() {
   return (
       <div>
         <Header/>
-        <CreateArea addNote={addNote} lastId={idCounter} nextId={nextId}/>
-        <NotesArea lastId={idCounter} noteList={noteList} callback={deleteNote}/>
+        <CreateArea addNoteCallback={addNote} nextIdCallback={nextId} lastId={idCounter} />
+        <NotesArea notesList={notesList} deleteNoteCallback={deleteNote}/>
         <Footer/>
       </div>
   );
