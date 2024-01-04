@@ -1,42 +1,60 @@
 import React, {useState} from "react";
-import note from "./Note";
+import AddIcon from '@mui/icons-material/Add';
+import Zoom from '@mui/material/Zoom';
 
 function CreateArea(props) {
 
   const [noteTitle, setNoteTitle] = useState("");
   const [noteContent, setNoteContent] = useState("");
-  const [idCounter, setIdCounter] = useState(0);
 
-  const noteTitleHandler = (event)=>{
+  const [isExpanded, setExpanded] = useState(false);
+
+  const noteTitleHandler = (event) => {
     const value = event.target.value;
     setNoteTitle(value);
   };
 
-  const noteContentHandler = (event)=>{
+  const noteContentHandler = (event) => {
     const value = event.target.value;
     setNoteContent(value);
   };
 
-  const nextId = () => {
-    setIdCounter(prevState=> prevState+1)
+  const expand = () => {
+    setExpanded(true);
   };
 
+  const {nextId, lastId, addNote} = props;
+
   return (
-    <div>
-      <form onSubmit={
-        (event)=> {
-          event.preventDefault();
-          props.callback({title: noteTitle, content: noteContent, id: idCounter});
-          setNoteContent("");
-          setNoteTitle("");
-          nextId();
-        }
-      }>
-        <input onChange={noteTitleHandler} value={noteTitle} name="title" placeholder="Title" />
-        <textarea onChange={noteContentHandler} value={noteContent} name="content" placeholder="Take a note..." rows="3" />
-        <button>Add</button>
-      </form>
-    </div>
+      <div>
+        <form className="create-note" onSubmit={
+          (event) => {
+            event.preventDefault();
+            addNote({title: noteTitle, content: noteContent, id: lastId});
+            setNoteContent("");
+            setNoteTitle("");
+            nextId();
+          }
+        }>
+
+          {isExpanded &&
+              <input onChange={noteTitleHandler}
+                     value={noteTitle} name="title"
+                     placeholder="Title"/>
+          }
+
+          <textarea
+              onChange={noteContentHandler}
+              onClick={expand}
+              value={noteContent} name="content"
+              placeholder="Take a note..." rows={isExpanded ? 3 : 1}/>
+
+          <Zoom in={isExpanded}>
+            <button><AddIcon/></button>
+          </Zoom>
+
+        </form>
+      </div>
   );
 }
 
