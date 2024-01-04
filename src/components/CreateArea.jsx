@@ -33,6 +33,9 @@ function CreateArea(props) {
   const expand = () => {
     setExpanded(true);
   };
+  const collapse = () => {
+    setExpanded(false);
+  }
 
   return (
       <div>
@@ -42,6 +45,7 @@ function CreateArea(props) {
             addNoteCallback(note);
             nextIdCallback();
             resetInputs();
+            collapse();
           }
         }>
 
@@ -49,7 +53,7 @@ function CreateArea(props) {
             <input onChange={noteHandler} value={note.title} name="title" placeholder="Title"/>
           }
 
-          <textarea onChange={noteHandler} onClick={expand} value={note.content}
+          <textarea onClick={expand} onChange={noteHandler} value={note.content}
                     name="content" placeholder="Take a note..." rows={isExpanded ? 3 : 1}/>
 
           <Zoom in={isExpanded}>
